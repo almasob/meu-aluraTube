@@ -1,20 +1,21 @@
 import config from "../config.json";
 import styled from "styled-components";
-import {CSSReset} from "../src/components/CSSReset"
+import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
 
 function HomePage() {
-//   const estiloHomePage = { backgroundColor: "red" };
+  //   const estiloHomePage = { backgroundColor: "red" };
 
   return (
     <>
-        <CSSReset />
-        <div>
+      <CSSReset />
+      <div>
         <Menu />
         <Header />
         <Timeline playL={config.playlists} />
-        </div>
+        <Favoritos />
+      </div>
     </>
   );
 }
@@ -26,14 +27,19 @@ export default HomePage;
 // }
 
 const StyleHeader = styled.div`
-  img {
-    width: 80px;
-    height: 80px;
+  .perfil {
+    width: 120px;
     border-radius: 50%;
   }
+  .banner {
+    height: 250px;
+    width: 100%;
+  }
+
   .user-info {
-    margin-top: 75px;
+    margin-top: 20px;
     display: flex;
+    gap: 10px;
     align-items: center;
     width: 100%;
     padding: 16px 32px;
@@ -42,9 +48,12 @@ const StyleHeader = styled.div`
 function Header() {
   return (
     <StyleHeader>
-      {/* {<img src="banner" />} */}
+      <img className="banner" src="/img/Banner.png" />
       <section className="user-info">
-        <img src={`https://github.com/${config.github}.png`} />
+        <img
+          className="perfil"
+          src={`https://github.com/${config.github}.png`}
+        />
         <div>
           <h2>{config.nome}</h2>
           <p>{config.job}</p>
@@ -67,7 +76,7 @@ function Timeline(props) {
             <div>
               {videos.map((video) => {
                 return (
-                  <a src={video.url}>
+                  <a href={video.url}>
                     <img src={video.thumb} />
                     <span>{video.title}</span>
                   </a>
@@ -78,5 +87,45 @@ function Timeline(props) {
         );
       })}
     </StyledTimeline>
+  );
+}
+
+const StyledFav = styled.section`
+  padding: 0 32px;
+  .itens {
+    display: flex;
+    gap: 20px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    text-align: center;
+  }
+  span {
+    padding-top: 5px;
+    font-weight: bold;
+  }
+  img {
+    width: 120px;
+  }
+`;
+function Favoritos() {
+  const fav = config.favoritos;
+  return (
+    <StyledFav>
+      <h1>AluraTubes Favoritos</h1>
+      <div className="itens">
+        {fav.map((f) => {
+          return (
+            <div className="item">
+              <img src={f.img} />
+              <span>{f.nome}</span>
+            </div>
+          );
+        })}
+      </div>
+    </StyledFav>
   );
 }
