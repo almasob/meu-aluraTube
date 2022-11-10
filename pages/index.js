@@ -6,12 +6,11 @@ import { StyledTimeline } from "../src/components/Timeline";
 import React from "react";
 
 function HomePage() {
-  //   const estiloHomePage = { backgroundColor: "red" };
   const [valorDoFiltro, setValorDoFiltro] = React.useState("");
 
   return (
     <>
-      <CSSReset />
+      
       <div>
         <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
         <Header />
@@ -29,6 +28,7 @@ export default HomePage;
 // }
 
 const StyleHeader = styled.div`
+  background-color: ${({theme}) => theme.backgroundLevel1};
   .perfil {
     width: 120px;
     border-radius: 50%;
