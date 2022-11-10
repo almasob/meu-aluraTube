@@ -3,17 +3,19 @@ import styled from "styled-components";
 import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import React from "react";
 
 function HomePage() {
   //   const estiloHomePage = { backgroundColor: "red" };
+  const [valorDoFiltro, setValorDoFiltro] = React.useState("");
 
   return (
     <>
       <CSSReset />
       <div>
-        <Menu />
+        <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
         <Header />
-        <Timeline playL={config.playlists} />
+        <Timeline  searchValue={valorDoFiltro} playL={config.playlists} />
         <Favoritos />
       </div>
     </>
@@ -63,7 +65,7 @@ function Header() {
   );
 }
 
-function Timeline(props) {
+function Timeline({searchValue, ...props}) {
   const playlistNames = Object.keys(props.playL);
 
   return (
@@ -71,12 +73,16 @@ function Timeline(props) {
       {playlistNames.map((playlistName) => {
         const videos = props.playL[playlistName];
         return (
-          <section>
+          <section key={playlistName}>
             <h2>{playlistName}</h2>
             <div>
-              {videos.map((video) => {
+              {videos.filter((video) =>{
+                  const titleNormalized = video.title.toLowerCase();
+                  const searchValueNormalized = searchValue.toLowerCase();
+                  return titleNormalized.includes(searchValueNormalized)
+              }).map((video) => {
                 return (
-                  <a href={video.url}>
+                  <a key={video.url} href={video.url}>
                     <img src={video.thumb} />
                     <span>{video.title}</span>
                   </a>
@@ -119,7 +125,7 @@ function Favoritos() {
       <div className="itens">
         {fav.map((f) => {
           return (
-            <div className="item">
+            <div key={f.nome} className="item">
               <img src={f.img} />
               <span>{f.nome}</span>
             </div>
